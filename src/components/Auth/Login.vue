@@ -1,88 +1,109 @@
-<template>
-  <div class="login-container">
 
-    <div class="register-container d-flex align-items-center justify-content-center">
-      <div class="form-group w-50">
-        <h3>Login</h3>
 
-        <input class="form-control m-2" v-model="email" type="text" placeholder="email">
-        <span v-if="errors.email" class="text-danger">{{errors.email}}</span>
+      <template>
+        <div >
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-8 offset-sm-2">
+                <div>
+                  <form @submit.prevent="handleSubmit">
 
-        <input class="form-control m-2" v-model="password" type="text" placeholder="password">
-        <span v-if="errors.password" class="text-danger">{{errors.password}}</span>
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="email" v-model="user.email" id="email" name="email" class="form-control" :class="{ 'is-invalid': submitted && $v.user.email.$error }" />
+                      <span class="danger" v-if="errors.email">Email doesn't exist</span>
+                      <div v-if="submitted && $v.user.email.$error" class="invalid-feedback">
+                        <span v-if="!$v.user.email.required">Email is required</span>
+                        <span v-if="!$v.user.email.email">Email is invalid</span>
 
-        <button @click="checkUser()" class="btn btn-dark">Register</button>
-      </div>
-    </div>
-  </div>
-</template>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="password">Password</label>
+                      <input type="password" v-model="user.password" id="password" name="password" class="form-control" :class="{ 'is-invalid': submitted && $v.user.password.$error }" />
+                      <span v-if="errors.password">Wrong Password </span>
+                      <div v-if="submitted && $v.user.password.$error" class="invalid-feedback">
+                        <span v-if="!$v.user.password.required">Password is required</span>
+                        <span v-if="!$v.user.password.minLength">Password must be at least 6 characters</span>
 
-<script>
-  export default {
-    name: "Login",
-    data() {
-      return {
-        errors: {
-          email: null,
-          password: null,
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <button class="btn btn-primary">Register</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <script>
+      import { required, email, minLength } from "vuelidate/lib/validators";
+
+      export default {
+        name: "app",
+        data() {
+          return {
+            errors:{
+              email: "",
+              password: "",
+            },
+            user: {
+
+              email: "",
+              password: "",
+            },
+            submitted: false
+          };
         },
-        current_user:{}
-      }
+        validations: {
+          user: {
+            email: { required, email },
+            password: { required, minLength: minLength(6) },
+          }
+        },
+        methods: {
 
-    },
+          getUser() {
+            let allUsers = localStorage.getItem('auth_users') || [];
+            allUsers = JSON.parse(allUsers)
+            return allUsers
+          },
 
-    methods: {
-      getUser() {
-        let allUsers = localStorage.getItem('auth_users') || [];
-        allUsers = JSON.parse(allUsers)
-        return allUsers
-      },
-      checkValidation(){
-        var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-        if (!this.email) {
-          this.errors.email = 'Email is required.';
-        } else if (!this.email.match(mailformat)) {
-          this.errors.email = 'Please Write email.';
-        } else {
-          this.current_user.email=this.email
-          this.errors.email = ""
-        }
+          checkUser() {
+              var users= this.getUser()
+              users.forEach(c_user=>{
+                if(c_user.email===this.user.email){
 
-        if (!this.password) {
-          this.errors.password = 'Password is required.';
-        } else if (this.password.length < 6) {
-          this.errors.password = "Password is short,write more than 5 letters"
-        } else {
-          this.current_user.password=this.password
-          this.errors.password = ""
-        }
-      },
-      storageUsers(user) {
-        let allUsers = JSON.stringify(user);
-        localStorage.setItem('current_user', allUsers);
-      },
-      checkUser() {
-        this.checkValidation()
-        if (this.errors.email===""&&this.errors.password===""){
-         var users= this.getUser()
-          users.forEach(user=>{
-            if(user.email===this.current_user.email){
+                  if(c_user.password===this.user.password){
+                    this.storageUsers(c_user)
 
-              if(user.password===this.current_user.password){
-                this.storageUsers(user)
-                this.$router.push('hello')
-              }else{this.errors.password="Please check your password" }
+                    this.$router.push('hello')
+                  }else{this.errors.password="Please check your password" }
+                }
+                else this.errors.email="this email does not registered"
+              })
+
+          },
+          storageUsers(user) {
+            let allUsers = JSON.stringify(user);
+            localStorage.setItem('current_user', allUsers);
+          },
+          handleSubmit(e) {
+            this.submitted = true;
+
+            // stop here if form is invalid
+            this.$v.$touch();
+            if (this.$v.$invalid) {
+              return;
             }
-            else this.errors.email="this email does not registered"
-          })
-        }else return false
-      }
-    }
-  }
-</script>
+            this.checkUser()
 
-<style scoped>
-  .register-container > input {
-    margin-bottom: 40px;
-  }
-</style>
+          }
+        }
+      };
+      </script>
+

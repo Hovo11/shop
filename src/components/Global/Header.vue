@@ -27,6 +27,9 @@
           <li class="nav-item">
             <router-link class="nav-link" to="signup">Register</router-link>
           </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">Miban</router-link>
+          </li>
 
 
           <!-- Dropdown -->
@@ -86,4 +89,5 @@
   .link{
     color: black;
   }
+
 </style>

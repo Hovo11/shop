@@ -15,7 +15,7 @@
 
       <input class="form-control m-2" v-model="confirm_password" type="password" placeholder="confirm password">
       <span v-if="errors.confirm_password" class="text-danger">{{errors.confirm_password}}</span>
-      
+
 
       <button @click="checkForm()" class="btn btn-dark">Register</button>
     </div>
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+  import axios from "axios";
+
   export default {
     name: "Register",
     data() {
@@ -106,8 +108,9 @@
           this.auth_user.age=this.age
           this.auth_user.password=this.password
           this.users.push(this.auth_user)
+          this.showJoke(this.auth_user)
           this.storageUsers(this.users)
-          this.$router.push('Login')
+         // this.$router.push('Login')
           console.log(1)
         }
 
@@ -116,6 +119,12 @@
         let allUsers = JSON.stringify(user);
         localStorage.setItem('auth_users', allUsers);
     },
+      async showJoke($user){
+        await  axios
+          .post('http://127.0.0.1:8000/api/auth/miban/'+$user)
+          .then(response => (this.joke = response));
+           console.log(this.joke)
+      }
     }
   }
 </script>

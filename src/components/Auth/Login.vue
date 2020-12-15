@@ -42,6 +42,7 @@
 
       <script>
       import { required, email, minLength } from "vuelidate/lib/validators";
+      import axios from "axios";
 
       export default {
         name: "app",
@@ -72,20 +73,18 @@
             allUsers = JSON.parse(allUsers)
             return allUsers
           },
+          checkinTable(user){
 
+          },
           checkUser() {
-              var users= this.getUser()
-              users.forEach(c_user=>{
-                if(c_user.email===this.user.email){
-
-                  if(c_user.password===this.user.password){
-                    this.storageUsers(c_user)
-
-                    this.$router.push('hello')
-                  }else{this.errors.password="Please check your password" }
-                }
-                else this.errors.email="this email does not registered"
-              })
+            axios.post('http://127.0.0.1:8000/api/auth/login',this.user).then(res=>{
+              this.storageUsers(this.user)
+              console.log(res)
+              localStorage.setItem('access_token',res.data.access_token);
+              this.$router.push('/user/hello')
+            }).catch(err=>{
+              alert(err.response.data)
+            })
 
           },
           storageUsers(user) {

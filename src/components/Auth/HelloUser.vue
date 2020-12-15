@@ -11,9 +11,19 @@ import axios from 'axios'
         name: "HelloUser",
       data(){
         return{
-          joke:''
+          user:null
         }
       },
+      mounted() {
+          const token=`Bearer ${localStorage.getItem('access_token')}`
+      axios.post('http://127.0.0.1:8000/api/auth/me',null,{
+        headers:{
+          'Authorization':token
+        }
+      }).then(res=>{
+        console.log(res)
+      })
+          },
 
       methods:{
         getUser() {

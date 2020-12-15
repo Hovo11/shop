@@ -15,7 +15,7 @@ export default [
     component: Login
   },
   {
-    path: '/hello',
+    path: '/user/hello',
     name: 'Hello',
     component: HelloUser
   },

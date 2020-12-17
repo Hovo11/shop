@@ -1,7 +1,7 @@
 <template>
   <div>
-<!--    <h1>Welcome Dear {{user.name}} </h1>-->
-<!--    <h1>Welcome Dear {{user.email}} </h1>-->
+    <h1>Welcome Dear {{user.name}} </h1>
+    <h1>Welcome Dear {{user.email}} </h1>
 
   </div>
 </template>
@@ -15,8 +15,12 @@ import axios from 'axios'
 
         }
       },
+      computed:{
+
+      },
+
       mounted() {
-        console.log(this.getUserData)
+
       },
 
       methods:{

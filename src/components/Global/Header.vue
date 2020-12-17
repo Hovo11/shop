@@ -27,11 +27,10 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/signup">Register</router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/">Miban</router-link>
+          <li>
+            <router-link class="nav-link" to="/signup" @click="logout($event)">Logout</router-link>
+<!--           <button class="bg-transparent border-0" @click="logout()">Logout</button>-->
           </li>
-
-
           <!-- Dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -61,8 +60,26 @@
 </template>
 
 <script>
+  import axios from "axios";
+
   export default {
-    name: "Header"
+    name: "Header",
+    methods:{
+      logout($event){
+        $event.preventDefault()
+        const token = `Bearer ${localStorage.getItem('access_token')}`
+        axios.post('http://127.0.0.1:8000/api/auth/logout', null, {
+          headers: {
+            'Authorization': token
+          }
+        }).then(res => {
+          localStorage.removeItem("user")
+          localStorage.removeItem("access_token")
+          this.$store.commit('setUser', null)
+          this.$router.push('/login')
+        })
+      }
+    }
   }
 </script>
 

@@ -8,7 +8,8 @@ import BootstrapVue from "bootstrap-vue";
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-
+import store from "./store";
+import userMixins from './mixins/user-mixin.js'
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false
 Vue.use(Vuelidate)
@@ -16,6 +17,8 @@ Vue.use(Vuelidate)
 new Vue({
   el: '#app',
   router,
+  store,
+  mixins: [userMixins],
   components: {App},
   template: '<App/>'
 })

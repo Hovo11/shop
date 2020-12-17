@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h1>Welcome Dear {{ user.name}} </h1>
-     <button @click="showJoke()">Samo</button>
+<!--    <h1>Welcome Dear {{user.name}} </h1>-->
+<!--    <h1>Welcome Dear {{user.email}} </h1>-->
+
   </div>
 </template>
 
@@ -11,19 +12,12 @@ import axios from 'axios'
         name: "HelloUser",
       data(){
         return{
-          user:null
+
         }
       },
       mounted() {
-          const token=`Bearer ${localStorage.getItem('access_token')}`
-      axios.post('http://127.0.0.1:8000/api/auth/me',null,{
-        headers:{
-          'Authorization':token
-        }
-      }).then(res=>{
-        this.user=res.data
-      })
-          },
+        console.log(this.getUserData)
+      },
 
       methods:{
         getUser() {

@@ -20,6 +20,9 @@ export default {
 
     }
   },
+  mounted() {
+    this.storeUser();
+  },
   methods: {
 
   },

@@ -78,14 +78,11 @@
             allUsers = JSON.parse(allUsers)
             return allUsers
           },
-          checkinTable(user){
 
-          },
           checkUser() {
             axios.post('http://127.0.0.1:8000/api/auth/login',this.user).then(res=>{
-              this.storageUsers(this.user)
-              console.log(res)
               localStorage.setItem('access_token',res.data.access_token);
+              this.storeUser()
               this.$router.push('/user/hello')
             }).catch(err=>{
               this.erorrs_laravel.unauthorized=err.response.data.error

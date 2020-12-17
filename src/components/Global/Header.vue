@@ -22,10 +22,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="Login">Login</router-link>
+            <router-link class="nav-link" to="/Login">Login</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="signup">Register</router-link>
+            <router-link class="nav-link" to="/signup">Register</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/">Miban</router-link>

@@ -16,7 +16,9 @@
                         <span v-if="!$v.user.email.required">Email is required</span>
                         <span v-if="!$v.user.email.email">Email is invalid</span>
 
+
                       </div>
+                      <span v-if="erorrs_laravel.unauthorized">Email doesn't exist</span>
                     </div>
                     <div class="form-group">
                       <label for="password">Password</label>
@@ -48,6 +50,9 @@
         name: "app",
         data() {
           return {
+            erorrs_laravel:{
+              unauthorized:null
+            },
             errors:{
               email: "",
               password: "",
@@ -83,7 +88,9 @@
               localStorage.setItem('access_token',res.data.access_token);
               this.$router.push('/user/hello')
             }).catch(err=>{
-              alert(err.response.data)
+              this.erorrs_laravel.unauthorized=err.response.data.error
+              console.log(this.erorrs_laravel.unauthorized)
+
             })
 
           },

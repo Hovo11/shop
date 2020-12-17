@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Welcome Dear {{ getUser().name}} </h1>
+    <h1>Welcome Dear {{ user.name}} </h1>
      <button @click="showJoke()">Samo</button>
   </div>
 </template>
@@ -21,7 +21,7 @@ import axios from 'axios'
           'Authorization':token
         }
       }).then(res=>{
-        console.log(res)
+        this.user=res.data
       })
           },
 

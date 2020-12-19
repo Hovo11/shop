@@ -14,6 +14,12 @@ export default Vue.mixin({
         this.$store.commit('setUser', res.data)
 
       })
+        .catch(res=> {
+          alert()
+          localStorage.removeItem("user")
+          this.$store.commit('setUser', null)
+          this.$router.push({name: 'Login'})
+        })
     }
   }
   ,

@@ -27,9 +27,13 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/signup">Register</router-link>
           </li>
-          <li>
-            <router-link class="nav-link" to="/signup" @click="logout($event)">Logout</router-link>
+          <li v-if="user" @click="logout($event)">
+            <router-link class="nav-link" to="/signup" >Logout</router-link>
 <!--           <button class="bg-transparent border-0" @click="logout()">Logout</button>-->
+          </li>
+          <li v-if="user">
+            <router-link class="nav-link" to="#" >MyAnnouncments</router-link>
+            <!--           <button class="bg-transparent border-0" @click="logout()">Logout</button>-->
           </li>
           <!-- Dropdown -->
           <li class="nav-item dropdown">
